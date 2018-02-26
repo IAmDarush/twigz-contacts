@@ -27,7 +27,7 @@ public class MessagesFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View messagesView = inflater.inflate(R.layout.fragment_messages, container, false);
-        TextView textContacts = messagesView.findViewById(R.id.text_contacts);
+
         return messagesView;
     }
 }
