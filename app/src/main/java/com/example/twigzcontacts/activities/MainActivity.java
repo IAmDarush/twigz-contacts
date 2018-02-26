@@ -1,4 +1,4 @@
-package com.example.twigzcontacts;
+package com.example.twigzcontacts.activities;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.twigzcontacts.R;
 import com.example.twigzcontacts.adapters.ViewPagerAdaper;
 import com.example.twigzcontacts.fragments.ContactsFragment;
 import com.example.twigzcontacts.fragments.MessagesFragment;
