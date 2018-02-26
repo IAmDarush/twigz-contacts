@@ -1,5 +1,6 @@
 package com.example.twigzcontacts.adapters;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.twigzcontacts.R;
+import com.example.twigzcontacts.activities.ContactInfoActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,15 +39,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        String firstName = mContactData.get(position).get("firstName");
-        String lastName = mContactData.get(position).get("lastName");
+        final String firstName = mContactData.get(position).get("firstName");
+        final String lastName = mContactData.get(position).get("lastName");
 
         holder.mTextContactName.setText(firstName + " " + lastName);
         
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(holder.itemView.getContext(), "Clicked " + position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(holder.itemView.getContext(), ContactInfoActivity.class);
+                intent.putExtra("name", firstName + " " + lastName);
+                intent.putExtra("phoneNumber", mContactData.get(position).get("phoneNumber"));
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
