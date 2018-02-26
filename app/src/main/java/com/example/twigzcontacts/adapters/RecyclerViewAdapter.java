@@ -9,15 +9,18 @@ import android.widget.Toast;
 
 import com.example.twigzcontacts.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by darush on 2/26/18.
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private String[] mContactData;
+    private ArrayList<HashMap<String, String>> mContactData;
 
-    public RecyclerViewAdapter(String[] contactData) {
+    public RecyclerViewAdapter(ArrayList contactData) {
         mContactData = contactData;
     }
 
@@ -34,7 +37,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        holder.mTextContactName.setText(mContactData[position]);
+        String firstName = mContactData.get(position).get("firstName");
+        String lastName = mContactData.get(position).get("lastName");
+
+        holder.mTextContactName.setText(firstName + " " + lastName);
         
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
 
-        return mContactData.length;
+        return mContactData.size();
 
     }
 

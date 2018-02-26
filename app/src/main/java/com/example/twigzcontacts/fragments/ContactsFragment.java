@@ -54,10 +54,8 @@ public class ContactsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerContacts.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(contactsList);
+        mAdapter = new RecyclerViewAdapter(getArrayOfContacts());
         mRecyclerContacts.setAdapter(mAdapter);
-
-        loadContactsFromAsset();
 
         return contactsView;
     }
@@ -80,7 +78,7 @@ public class ContactsFragment extends Fragment {
         return json;
     }
 
-    public ArrayList loadContactsFromAsset() {
+    public ArrayList getArrayOfContacts() {
 
         ArrayList<HashMap<String, String>> contactsArray = new ArrayList<>();
 
@@ -91,9 +89,10 @@ public class ContactsFragment extends Fragment {
 
             for (int i=0; i<jsonArray.length(); i++) {
                 JSONObject contact = jsonArray.getJSONObject(i);
-                Log.d(TAG, "first name: " + contact.getString("firstName"));
+
+                /*Log.d(TAG, "first name: " + contact.getString("firstName"));
                 Log.d(TAG, "last name: " + contact.getString("lastName"));
-                Log.d(TAG, "phone numbber: " + contact.getString("phoneNumber"));
+                Log.d(TAG, "phone numbber: " + contact.getString("phoneNumber"));*/
 
                 contactsMap = new HashMap<>();
                 contactsMap.put("firstName", contact.getString("firstName"));
