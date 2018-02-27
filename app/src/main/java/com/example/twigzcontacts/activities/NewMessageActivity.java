@@ -15,6 +15,7 @@ import com.example.twigzcontacts.webservice.TwilioClient;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -66,7 +67,9 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     public int getRandomOtp() {
-        return 123456;
+        Random random = new Random();
+        int num = 100000 + random.nextInt(900000);
+        return num;
     }
 
     @Override
