@@ -1,5 +1,6 @@
 package com.example.twigzcontacts.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,7 +44,12 @@ public class ContactInfoActivity extends AppCompatActivity {
         btnSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ContactInfoActivity.this, name + " " + phoneNumber, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(ContactInfoActivity.this, NewMessageActivity.class);
+                intent.putExtra("phoneNumber", phoneNumber);
+                startActivity(intent);
+
+                //Toast.makeText(ContactInfoActivity.this, name + " " + phoneNumber, Toast.LENGTH_SHORT).show();
             }
         });
     }
