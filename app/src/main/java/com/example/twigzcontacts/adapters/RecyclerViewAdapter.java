@@ -24,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<Contact> mContactList;
 
-    public RecyclerViewAdapter(ArrayList contactList) {
+    public RecyclerViewAdapter(ArrayList<Contact> contactList) {
         mContactList = contactList;
     }
 

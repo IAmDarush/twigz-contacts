@@ -8,10 +8,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.twigzcontacts.activities.MainActivity">
 
-    <TextView
-        android:id="@+id/text_messages"
-        android:text="Messages Fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:scrollbars="vertical"
+        android:id="@+id/list_messages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
