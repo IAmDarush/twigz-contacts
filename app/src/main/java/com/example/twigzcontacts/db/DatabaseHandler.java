@@ -52,7 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    void addMessage(Message message) {
+    public void addMessage(Message message) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -66,7 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    Message getMessage(int id) {
+    public Message getMessage(int id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -109,7 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Message message = new Message();
                 message.setName(cursor.getString(0));
                 message.setTime(cursor.getString(1));
-                message.setOtp(String.valueOf(cursor.getInt(3)));
+                message.setOtp(String.valueOf(cursor.getInt(2)));
 
                 messageList.add(message);
 

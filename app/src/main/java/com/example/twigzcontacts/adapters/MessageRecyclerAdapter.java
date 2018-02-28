@@ -10,6 +10,7 @@ import com.example.twigzcontacts.R;
 import com.example.twigzcontacts.models.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by darush on 2/28/18.
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.MessageViewHolder>{
 
-    private ArrayList<Message> mMessageList;
+    private List<Message> mMessageList;
 
-    public MessageRecyclerAdapter(ArrayList<Message> messageList) {
+    public MessageRecyclerAdapter(List<Message> messageList) {
         mMessageList = messageList;
     }
 
