@@ -128,4 +128,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return messageList;
     }
 
+    public void deleteAllData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_MESSAGES);
+    }
+
 }

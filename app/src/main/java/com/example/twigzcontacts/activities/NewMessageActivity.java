@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,15 +29,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.R.id.message;
+import static com.example.twigzcontacts.utils.Constants.BASE_URL;
+import static com.example.twigzcontacts.utils.Constants.FROM;
+import static com.example.twigzcontacts.utils.Utils.getIndianTime;
+
 public class NewMessageActivity extends AppCompatActivity {
 
-    EditText field_message;
-    Button button_send;
-    String message;
-    String phoneNumber;
+    private EditText mFieldMessage;
+    private Button mButtonSend;
     String name;
-    int otp;
-    public static final String BASE_URL = "https://api.twilio.com";
+    String phoneNumber;
     public static final String TAG = "mytag";
 
     @Override
@@ -50,24 +50,22 @@ public class NewMessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        otp = Utils.getRandomOtp();
-        message = "Hi. Your OTP is: " + otp;
-
         if (getIntent().hasExtra(Constants.EXTRA_PHONE_NUMBER)) {
             phoneNumber = getIntent().getStringExtra(Constants.EXTRA_PHONE_NUMBER);
             name = getIntent().getStringExtra(Constants.EXTRA_NAME);
         }
 
-        field_message = (EditText) findViewById(R.id.field_newmessage_message);
-        field_message.setText(message);
+        final int otp = Utils.getRandomOtp();
+        final String message = "Hi. Your OTP is: " + otp;
 
-        button_send = (Button) findViewById(R.id.button_newmessage_send);
-        button_send.setOnClickListener(new View.OnClickListener() {
+        mFieldMessage = (EditText) findViewById(R.id.field_newmessage_message);
+        mFieldMessage.setText(message);
+
+        mButtonSend = (Button) findViewById(R.id.button_newmessage_send);
+        mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                sendMessage(message, phoneNumber);
-                //Toast.makeText(NewMessageActivity.this, "Sending...", Toast.LENGTH_SHORT).show();
+                sendMessage(name, message, phoneNumber, otp);
             }
         });
 
@@ -81,23 +79,14 @@ public class NewMessageActivity extends AppCompatActivity {
         return true;
     }
 
-    private void sendMessage(String message, String phoneNumber) {
+    private void sendMessage(final String name, String message, String phoneNumber, final int otp) {
 
-        String body = message;
+        final String body = message;
         String to = phoneNumber;
-        String from = "+14243533758";
         String AUTH_TOKEN = getResources().getString(R.string.twilio_auth_token);
         String ACCOUNT_SID = getResources().getString(R.string.twilio_account_sid);
-
-        String base64EncodedCredentials = "Basic " + Base64.encodeToString(
-                (ACCOUNT_SID + ":" + AUTH_TOKEN).getBytes(), Base64.NO_WRAP
-        );
-
-        Map<String, String> data = new HashMap<>();
-        data.put("From", from);
-        data.put("To", to);
-        data.put("Body", body);
-
+        String base64EncodedCredentials = Utils.getBase64EncodedCredentials(ACCOUNT_SID, AUTH_TOKEN);
+        Map<String, String> data = composeMessage(FROM, to, body);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -111,21 +100,16 @@ public class NewMessageActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if (response.isSuccessful()) {
-                    //Log.d(TAG, "onResponse: Successful");
                     try {
-                        String responseBody = response.body().string();
-                        JsonParser jsonParser = new JsonParser();
-                        JsonObject jsonObject = (JsonObject) jsonParser.parse(responseBody);
-                        String time = jsonObject.get("date_created").getAsString();
-                        Message message1 = new Message();
-                        message1.setName(name);
-                        message1.setTime(time);
-                        message1.setOtp(String.valueOf(otp));
+                        // Retrieve the time from the response body
+                        String time = getTimeFromBody(response.body().string());
 
+                        // Construct a new message object with the specified data
+                        Message message = new Message(name, getIndianTime(time), String.valueOf(otp));
+
+                        // Add the message object into the databbase
                         DatabaseHandler db = new DatabaseHandler(NewMessageActivity.this);
-                        db.addMessage(message1);
-
-                        Log.d(TAG, response.body().string());
+                        db.addMessage(message);
 
                         Toast.makeText(NewMessageActivity.this, "Message sent successfully...", Toast.LENGTH_SHORT).show();
 
@@ -137,7 +121,7 @@ public class NewMessageActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(NewMessageActivity.this, "Error! Response was not successful", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, response.toString());
+                    //Log.d(TAG, response.toString());
                 }
 
             }
@@ -150,11 +134,34 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Parse the body string and return the message creation time
+     *
+     * @param body body of the HTTP response
+     * @return message creation time
+     */
+    private String getTimeFromBody(String body) {
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(body);
+        String time = jsonObject.get("date_created").getAsString();
+        return time;
+    }
+
+    /**
+     * Close the top activities from the activity stack and go back to MainActivity
+     */
     private void goToMainActivity() {
         Intent intent = new Intent(NewMessageActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
+    private Map<String, String> composeMessage(String from, String to, String body) {
+        Map<String, String> data = new HashMap<>();
+        data.put("From", from);
+        data.put("To", to);
+        data.put("Body", body);
+        return data;
+    }
 
 }
