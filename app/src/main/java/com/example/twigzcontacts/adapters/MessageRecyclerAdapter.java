@@ -40,7 +40,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
         holder.tvName.setText(message.getName());
         holder.tvTime.setText(message.getTime());
-        holder.tvOtp.setText(message.getOtp());
+        holder.tvOtp.setText("OTP: " + message.getOtp());
 
     }
 

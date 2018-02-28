@@ -52,6 +52,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    /**
+     * Add a new message into the database
+     * @param message the message object to be added into the database
+     */
     public void addMessage(Message message) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -94,6 +98,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Get all the messages from the database
+     * @return list of all the messages in the database
+     */
     public List<Message> getAllMessages() {
 
         List<Message> messageList = new ArrayList<>();

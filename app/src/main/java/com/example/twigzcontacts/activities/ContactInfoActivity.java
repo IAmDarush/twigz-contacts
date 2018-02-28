@@ -50,6 +50,7 @@ public class ContactInfoActivity extends AppCompatActivity {
                 if(!phoneNumber.isEmpty() && phoneNumber != null) {
                     Intent intent = new Intent(ContactInfoActivity.this, NewMessageActivity.class);
                     intent.putExtra(EXTRA_PHONE_NUMBER, phoneNumber);
+                    intent.putExtra(EXTRA_NAME, name);
                     startActivity(intent);
                 } else {
                     Toast.makeText(ContactInfoActivity.this, "No phone number...", Toast.LENGTH_SHORT).show();
