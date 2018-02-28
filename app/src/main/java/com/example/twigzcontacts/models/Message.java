@@ -10,6 +10,8 @@ public class Message {
     String time;
     String otp;
 
+    public Message() {}
+
     public Message(String name, String time, String otp) {
         this.name = name;
         this.time = time;
@@ -39,5 +41,5 @@ public class Message {
     public void setOtp(String otp) {
         this.otp = otp;
     }
-    
+
 }
