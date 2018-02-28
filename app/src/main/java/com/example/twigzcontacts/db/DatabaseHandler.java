@@ -98,7 +98,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         List<Message> messageList = new ArrayList<>();
 
-        String selectQuery = "SELECT " + KEY_NAME + "," + KEY_TIME + "," + KEY_OTP + " FROM " + TABLE_MESSAGES;
+        String selectQuery = "SELECT " + KEY_NAME + "," + KEY_TIME + "," + KEY_OTP
+                + " FROM " + TABLE_MESSAGES + " ORDER BY " + KEY_TIME + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
