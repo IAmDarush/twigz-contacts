@@ -1,5 +1,6 @@
 package com.example.twigzcontacts.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.R.id.message;
 import static com.example.twigzcontacts.utils.Constants.BASE_URL;
 import static com.example.twigzcontacts.utils.Constants.FROM;
 import static com.example.twigzcontacts.utils.Utils.getIndianTime;
@@ -38,8 +38,9 @@ public class NewMessageActivity extends AppCompatActivity {
 
     private EditText mFieldMessage;
     private Button mButtonSend;
-    String name;
-    String phoneNumber;
+    private String name;
+    private String phoneNumber;
+    private ProgressDialog progress;
     public static final String TAG = "mytag";
 
     @Override
@@ -65,6 +66,7 @@ public class NewMessageActivity extends AppCompatActivity {
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgressDialog();
                 sendMessage(name, message, phoneNumber, otp);
             }
         });
@@ -112,7 +114,7 @@ public class NewMessageActivity extends AppCompatActivity {
                         db.addMessage(message);
 
                         Toast.makeText(NewMessageActivity.this, "Message sent successfully...", Toast.LENGTH_SHORT).show();
-
+                        hideProgressDialog();
                         goToMainActivity();
 
                     } catch (IOException e) {
@@ -123,6 +125,8 @@ public class NewMessageActivity extends AppCompatActivity {
                     Toast.makeText(NewMessageActivity.this, "Error! Response was not successful", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, response.toString());
                 }
+
+                hideProgressDialog();
 
             }
 
@@ -162,6 +166,20 @@ public class NewMessageActivity extends AppCompatActivity {
         data.put("To", to);
         data.put("Body", body);
         return data;
+    }
+
+    private void showProgressDialog() {
+        progress = new ProgressDialog(this);
+        progress.setTitle("Sending...");
+        progress.setMessage("Please wait while sending the message.");
+        progress.setCancelable(false);
+        progress.show();
+    }
+
+    private void hideProgressDialog() {
+        if(progress != null && progress.isShowing()) {
+            progress.dismiss();
+        }
     }
 
 }
