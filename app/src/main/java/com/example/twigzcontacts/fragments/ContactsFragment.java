@@ -73,7 +73,7 @@ public class ContactsFragment extends Fragment {
         return json;
     }
 
-    public ArrayList getListOfContacts() {
+    public ArrayList<Contact> getListOfContacts() {
 
         ArrayList<Contact> contactsArray = new ArrayList<>();
 
