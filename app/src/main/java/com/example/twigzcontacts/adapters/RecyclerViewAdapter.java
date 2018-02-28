@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.twigzcontacts.R;
 import com.example.twigzcontacts.activities.ContactInfoActivity;
+import com.example.twigzcontacts.models.Contact;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import static com.example.twigzcontacts.utils.Constants.EXTRA_NAME;
+import static com.example.twigzcontacts.utils.Constants.EXTRA_PHONE_NUMBER;
 
 /**
  * Created by darush on 2/26/18.
@@ -20,10 +22,10 @@ import java.util.HashMap;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<HashMap<String, String>> mContactData;
+    private ArrayList<Contact> mContactList;
 
-    public RecyclerViewAdapter(ArrayList contactData) {
-        mContactData = contactData;
+    public RecyclerViewAdapter(ArrayList contactList) {
+        mContactList = contactList;
     }
 
     @Override
@@ -39,8 +41,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        final String firstName = mContactData.get(position).get("firstName");
-        final String lastName = mContactData.get(position).get("lastName");
+        final String firstName = mContactList.get(position).getFirstName();
+        final String lastName = mContactList.get(position).getLastName();
 
         holder.mTextContactName.setText(firstName + " " + lastName);
         
@@ -48,8 +50,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(holder.itemView.getContext(), ContactInfoActivity.class);
-                intent.putExtra("name", firstName + " " + lastName);
-                intent.putExtra("phoneNumber", mContactData.get(position).get("phoneNumber"));
+                intent.putExtra(EXTRA_NAME, firstName + " " + lastName);
+                intent.putExtra(EXTRA_PHONE_NUMBER, mContactList.get(position).getPhoneNumber());
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -59,10 +61,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
 
-        return mContactData.size();
+        return mContactList.size();
 
     }
 
+    /**
+     * Custom ViewHolder that describes an item in our recycler view
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mTextContactName;

@@ -8,14 +8,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.twigzcontacts.R;
+import com.example.twigzcontacts.utils.Constants;
+import com.example.twigzcontacts.utils.Utils;
 import com.example.twigzcontacts.webservice.TwilioClient;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,8 +32,6 @@ public class NewMessageActivity extends AppCompatActivity {
     Button button_send;
     String message;
     String phoneNumber;
-    public static final String ACCOUNT_SID = "AC086325fcd8ae251b9c22b6ee6e993c18";
-    public static final String AUTH_TOKEN = "e1a61c19e3aac553d2b0dcc79681134e";
     public static final String BASE_URL = "https://api.twilio.com";
     public static final String TAG = "mytag";
 
@@ -43,17 +43,16 @@ public class NewMessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        message = "Hi. Your OTP is: " + getRandomOtp();
+        message = "Hi. Your OTP is: " + Utils.getRandomOtp();
 
-        if (getIntent().hasExtra("phoneNumber")) {
-            phoneNumber = getIntent().getStringExtra("phoneNumber");
+        if (getIntent().hasExtra(Constants.EXTRA_PHONE_NUMBER)) {
+            phoneNumber = getIntent().getStringExtra(Constants.EXTRA_PHONE_NUMBER);
         }
 
         field_message = (EditText) findViewById(R.id.field_newmessage_message);
         field_message.setText(message);
 
         button_send = (Button) findViewById(R.id.button_newmessage_send);
-
         button_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,11 +65,6 @@ public class NewMessageActivity extends AppCompatActivity {
 
     }
 
-    public int getRandomOtp() {
-        Random random = new Random();
-        int num = 100000 + random.nextInt(900000);
-        return num;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -83,6 +77,8 @@ public class NewMessageActivity extends AppCompatActivity {
         String body = message;
         String to = phoneNumber;
         String from = "+14243533758";
+        String AUTH_TOKEN = getResources().getString(R.string.twilio_auth_token);
+        String ACCOUNT_SID = getResources().getString(R.string.twilio_account_sid);
 
         String base64EncodedCredentials = "Basic " + Base64.encodeToString(
                 (ACCOUNT_SID + ":" + AUTH_TOKEN).getBytes(), Base64.NO_WRAP
@@ -111,10 +107,13 @@ public class NewMessageActivity extends AppCompatActivity {
                                 Log.d(TAG, response.toString());
                                 Log.d(TAG, response.body().string());
                                 Log.d(TAG, response.body().contentType().toString());
+                                Toast.makeText(NewMessageActivity.this, "Successfully sent...", Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
                                 e.printStackTrace();
+                                Toast.makeText(NewMessageActivity.this, "Failed to send...", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+                            Toast.makeText(NewMessageActivity.this, "Error...", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "onResponse: Failed");
                             Log.d(TAG, response.toString());
                             Log.d(TAG, ">>>>>>>>>>>>>>>");

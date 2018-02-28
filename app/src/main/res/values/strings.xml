@@ -4,4 +4,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_contact_info">ContactInfoActivity</string>
     <string name="title_activity_new_message">NewMessageActivity</string>
+    <string name="twilio_auth_token">e1a61c19e3aac553d2b0dcc79681134e</string>
+    <string name="twilio_account_sid">AC086325fcd8ae251b9c22b6ee6e993c18</string>
 </resources>
