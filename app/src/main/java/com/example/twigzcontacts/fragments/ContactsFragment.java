@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.twigzcontacts.R;
-import com.example.twigzcontacts.adapters.RecyclerViewAdapter;
+import com.example.twigzcontacts.adapters.ContactRecyclerAdapter;
 import com.example.twigzcontacts.models.Contact;
 
 import org.json.JSONArray;
@@ -49,7 +49,7 @@ public class ContactsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerContacts.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(getListOfContacts());
+        mAdapter = new ContactRecyclerAdapter(getListOfContacts());
         mRecyclerContacts.setAdapter(mAdapter);
 
         return contactsView;

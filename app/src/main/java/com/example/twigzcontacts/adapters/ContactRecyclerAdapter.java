@@ -20,26 +20,26 @@ import static com.example.twigzcontacts.utils.Constants.EXTRA_PHONE_NUMBER;
  * Created by darush on 2/26/18.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ContactViewHolder> {
 
     private ArrayList<Contact> mContactList;
 
-    public RecyclerViewAdapter(ArrayList<Contact> contactList) {
+    public ContactRecyclerAdapter(ArrayList<Contact> contactList) {
         mContactList = contactList;
     }
 
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_contact, parent, false);
 
-        return new ViewHolder(view);
+        return new ContactViewHolder(view);
 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ContactViewHolder holder, final int position) {
 
         final String firstName = mContactList.get(position).getFirstName();
         final String lastName = mContactList.get(position).getLastName();
@@ -68,11 +68,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     /**
      * Custom ViewHolder that describes an item in our recycler view
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ContactViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mTextContactName;
 
-        public ViewHolder(View itemView) {
+        public ContactViewHolder(View itemView) {
             super(itemView);
 
             mTextContactName = itemView.findViewById(R.id.text_contact_name);
